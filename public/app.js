@@ -404,7 +404,7 @@ function bindEvents() {
     state.selectedEquipmentId = event.target.value;
     renderLifeSheet();
   });
- $("#downloadPdfButton").addEventListener("click", () => {
+  $("#downloadReportButton").addEventListener("click", () => {
   // 1. Cambiamos visualmente a la pestaña del reporte
   setView("reporte");
   
@@ -413,7 +413,14 @@ function bindEvents() {
     // 3. Abrimos la ventana del sistema para Guardar como PDF o Imprimir
     window.print();
   }, 100);
-});
+
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `reporte-${equipo?.codigo || "equipo"}.json`;
+    link.click();
+    URL.revokeObjectURL(link.href);
+  });
 
   $("#equipmentForm").addEventListener("submit", (event) => {
     event.preventDefault();
