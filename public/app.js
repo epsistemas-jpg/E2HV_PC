@@ -37,7 +37,7 @@ const fields = {
     ["ubicacion", "Ubicacion", "text"],
     ["responsableActual", "Responsable actual", "text"],
     ["cargoActual", "Cargo actual", "text"],
-    ["foto", "URL de foto", "url"],
+    ["foto", "Imagen del equipo", "text"],
     ["notas", "Notas", "textarea"]
   ],
   mantenimiento: [

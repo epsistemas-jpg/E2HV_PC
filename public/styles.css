@@ -314,8 +314,44 @@ textarea:focus {
 
 .equipment-card {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 72px 1fr auto;
+  align-items: center;
   gap: 12px;
+}
+
+.equipment-thumb,
+.image-preview,
+.sheet-photo {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px dashed #b9c6cf;
+  border-radius: 8px;
+  color: var(--muted);
+  background: #f8fafb;
+  text-align: center;
+}
+
+.equipment-thumb {
+  width: 72px;
+  aspect-ratio: 1;
+  font-size: 0.76rem;
+}
+
+.equipment-thumb img,
+.image-preview img,
+.sheet-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.equipment-thumb.has-image,
+.image-preview.has-image,
+.sheet-photo:has(img) {
+  border-style: solid;
+  border-color: var(--line);
+  background: #ffffff;
 }
 
 .equipment-card strong,
@@ -420,6 +456,47 @@ td {
   grid-column: 1 / -1;
 }
 
+.image-field {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fbfdfe;
+}
+
+.image-preview {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  min-height: 190px;
+  font-weight: 800;
+}
+
+.file-control {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink) !important;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.file-control input {
+  display: none;
+}
+
+.image-field p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 .form-actions {
   grid-column: 1 / -1;
   display: flex;
@@ -497,6 +574,25 @@ td {
 .sheet-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
+}
+
+.sheet-equipment {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(260px, 0.8fr);
+}
+
+.sheet-equipment .sheet-grid {
+  min-width: 0;
+}
+
+.sheet-photo {
+  min-height: 330px;
+  border-width: 0 0 1px 1px;
+  border-style: solid;
+  border-color: #111827;
+  border-radius: 0;
+  padding: 16px;
+  font-weight: 800;
 }
 
 .sheet-row {
@@ -592,8 +688,14 @@ td {
 
   .form-grid,
   .sheet-head,
-  .sheet-grid {
+  .sheet-grid,
+  .sheet-equipment {
     grid-template-columns: 1fr;
+  }
+
+  .sheet-photo {
+    min-height: 240px;
+    border-left: 0;
   }
 
   .sheet-logo,
