@@ -1,0 +1,17 @@
+{
+  "name": "hvpc",
+  "version": "0.1.0",
+  "description": "Sistema web para hoja de vida, mantenimiento y rotacion de equipos de computo.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "inventario",
+    "mantenimiento",
+    "equipos"
+  ],
+  "author": "",
+  "license": "UNLICENSED"
+}

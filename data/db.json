@@ -1,0 +1,61 @@
+{
+  "equipos": [
+    {
+      "id": "ff127e10-a5d3-44f9-bf42-66abced8e5b6",
+      "codigo": "E2PC0004",
+      "nombre": "Equipo administrativo oficina e2",
+      "categoria": "Equipo de Computo",
+      "criticidad": "2",
+      "estado": "Activo",
+      "marca": "HP",
+      "modelo": "7483AM7",
+      "serial": "MJ62953",
+      "procesador": "Core 2 Quad 2.6 GHz",
+      "disco": "250 GB",
+      "memoria": "3.2 GB",
+      "accesorios": "Cargador",
+      "fechaAdquisicion": "2009-07-15",
+      "fechaPuestaMarcha": "2009-07-15",
+      "proveedor": "NA",
+      "garantia": "3 Anos",
+      "responsableGarantia": "LENOVO",
+      "telefonoGarantia": "018009123021",
+      "ubicacion": "e2 Oficina",
+      "responsableActual": "Brayan Torres",
+      "cargoActual": "Auxiliar Administrativo y de Sistemas",
+      "foto": "",
+      "notas": "Equipo de diagnostico y medicion usado como referencia historica."
+    }
+  ],
+  "mantenimientos": [
+    {
+      "id": "754b4236-1d4f-4b52-99b7-b1c2068f62da",
+      "equipoId": "ff127e10-a5d3-44f9-bf42-66abced8e5b6",
+      "fecha": "2023-07-07",
+      "orden": "-",
+      "tipo": "MP",
+      "actividad": "Preventivo",
+      "descripcion": "Escaneo de antivirus, eliminacion de archivos temporales y liberacion de espacio.",
+      "observaciones": "Equipo queda operativo.",
+      "responsable": "Brayan Torres",
+      "certificadoCalibracion": "",
+      "certificadoPatron": "",
+      "repuesto": "-",
+      "costo": 0
+    }
+  ],
+  "rotaciones": [
+    {
+      "id": "d9cfbd41-88c5-4330-95d8-a2d12d2e4cd0",
+      "equipoId": "ff127e10-a5d3-44f9-bf42-66abced8e5b6",
+      "fechaAsignacion": "2022-09-29",
+      "personaAsignada": "Jorge Lambano",
+      "cargoAsignado": "Ing. Auxiliar I",
+      "proyecto": "e2 Oficina",
+      "quienAsigna": "Brayan Torres",
+      "cargoQuienAsigna": "Auxiliar Administrativo y de Sistemas",
+      "fechaDevolucion": "2022-09-29",
+      "motivoDevolucion": "Devolucion"
+    }
+  ]
+}
