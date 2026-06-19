@@ -14,6 +14,7 @@ const PUBLIC_DIR = path.join(ROOT, "public");
 const DATA_DIR = path.join(ROOT, "data");
 const DATA_FILE = path.join(DATA_DIR, "db.json");
 const USE_MYSQL = (process.env.DB_DRIVER || "mysql").toLowerCase() === "mysql";
+const AUTO_SCHEMA = String(process.env.DB_AUTO_SCHEMA || "false").toLowerCase() === "true";
 
 const mysqlConfig = {
   host: process.env.DB_HOST || "localhost",
@@ -312,7 +313,6 @@ function seedData() {
 }
 
 async function initMySql() {
-  const schema = await fs.readFile(path.join(ROOT, "database", "schema.sql"), "utf8");
   const admin = await mysql.createConnection({
     host: mysqlConfig.host,
     port: mysqlConfig.port,
@@ -324,11 +324,14 @@ async function initMySql() {
   await admin.end();
 
   pool = mysql.createPool(mysqlConfig);
-  await pool.query(schema);
 
-  const [[{ total }]] = await pool.query("SELECT COUNT(*) AS total FROM equipos");
-  if (total === 0) {
-    await seedMySql();
+  if (AUTO_SCHEMA) {
+    const schema = await fs.readFile(path.join(ROOT, "database", "schema.sql"), "utf8");
+    await pool.query(schema);
+    const [[{ total }]] = await pool.query("SELECT COUNT(*) AS total FROM equipos");
+    if (total === 0) {
+      await seedMySql();
+    }
   }
   storageMode = "mysql";
 }

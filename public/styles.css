@@ -738,3 +738,37 @@ td {
     box-shadow: none;
   }
 }
+@media print {
+  /* Ocultamos los menús laterales, la barra superior y los botones de selección */
+  .sidebar, 
+  .topbar, 
+  .report-toolbar,
+  .form-actions {
+    display: none !important;
+  }
+  
+  /* Ajustamos los contenedores principales para que ocupen todo el ancho de la página */
+  .app-shell, 
+  .workspace, 
+  #reporteView {
+    display: block !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Estilos específicos para la hoja de vida impresa */
+  .life-sheet {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Forzar al navegador a renderizar los colores de fondo de las tablas y etiquetas en el PDF */
+  body {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

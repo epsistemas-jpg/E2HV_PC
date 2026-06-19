@@ -404,20 +404,16 @@ function bindEvents() {
     state.selectedEquipmentId = event.target.value;
     renderLifeSheet();
   });
-  $("#downloadReportButton").addEventListener("click", () => {
-    const equipo = state.equipos.find((item) => item.id === state.selectedEquipmentId);
-    const payload = {
-      equipo,
-      mantenimientos: state.mantenimientos.filter((item) => item.equipoId === state.selectedEquipmentId),
-      rotaciones: state.rotaciones.filter((item) => item.equipoId === state.selectedEquipmentId)
-    };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.download = `reporte-${equipo?.codigo || "equipo"}.json`;
-    link.click();
-    URL.revokeObjectURL(link.href);
-  });
+ $("#downloadPdfButton").addEventListener("click", () => {
+  // 1. Cambiamos visualmente a la pestaña del reporte
+  setView("reporte");
+  
+  // 2. Esperamos 100 milisegundos a que el navegador dibuje la hoja de vida
+  setTimeout(() => {
+    // 3. Abrimos la ventana del sistema para Guardar como PDF o Imprimir
+    window.print();
+  }, 100);
+});
 
   $("#equipmentForm").addEventListener("submit", (event) => {
     event.preventDefault();
