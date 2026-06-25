@@ -34,10 +34,10 @@ const fields = {
     ["garantia", "Vigencia garantia", "text"],
     ["responsableGarantia", "Responsable garantia", "text"],
     ["telefonoGarantia", "Telefono garantia", "text"],
-    ["ubicacion", "Ubicacion", "text"],
     ["responsableActual", "Responsable actual", "text"],
+    ["ubicacion", "Ubicación física", "text"],
     ["cargoActual", "Cargo actual", "text"],
-    ["foto", "Imagen del equipo", "text"],
+    ["foto", "Ruta de imagen", "hidden"],
     ["notas", "Notas", "textarea"]
   ],
   mantenimiento: [
@@ -111,6 +111,33 @@ function filteredEquipos() {
     Object.values(item).join(" ").toLowerCase().includes(term)
   );
 }
+function filteredMantenimientos() {
+
+    const term = state.search.toLowerCase();
+
+    if (!term) return state.mantenimientos;
+
+    return state.mantenimientos.filter((item) =>
+        Object.values(item)
+            .join(" ")
+            .toLowerCase()
+            .includes(term)
+    );
+}
+
+function filteredRotaciones() {
+
+    const term = state.search.toLowerCase();
+
+    if (!term) return state.rotaciones;
+
+    return state.rotaciones.filter((item) =>
+        Object.values(item)
+            .join(" ")
+            .toLowerCase()
+            .includes(term)
+    );
+}
 
 function renderForm(type, formSelector) {
   const form = $(formSelector);
@@ -130,7 +157,13 @@ function renderForm(type, formSelector) {
 
   form.innerHTML = imageBlock + fields[type].map(([name, label, inputType, options]) => {
     const value = current[name] || "";
-    const wide = inputType === "textarea" || name === "foto" || name === "notas" || name === "descripcion" || name === "observaciones" || name === "motivoDevolucion";
+    const wide =
+      inputType === "textarea" ||
+      name === "notas" ||
+      name === "descripcion" ||
+      name === "observaciones" ||
+      name === "motivoDevolucion";
+
     if (inputType === "select") {
       return `<label class="${wide ? "wide" : ""}">${label}<select name="${name}">${options.map((option) => `<option value="${option}" ${value === option ? "selected" : ""}>${option}</option>`).join("")}</select></label>`;
     }
@@ -191,39 +224,64 @@ function renderDashboard() {
 }
 
 function renderTables() {
-  $("#equipmentTable").innerHTML = filteredEquipos().map((item) => `
-    <tr>
-      <td><strong>${item.codigo}</strong></td>
-      <td>${item.nombre}</td>
-      <td>${item.marca} ${item.modelo}</td>
-      <td>${item.responsableActual || "-"}</td>
-      <td><span class="status ${item.estado === "Activo" ? "" : "warning"}">${item.estado}</span></td>
-      <td>${actions("equipo", item.id)}</td>
-    </tr>
-  `).join("") || rowEmpty(6, "No hay equipos para mostrar.");
 
-  $("#maintenanceTable").innerHTML = state.mantenimientos.map((item) => `
-    <tr>
-      <td>${formatDate(item.fecha)}</td>
-      <td>${equipmentName(item.equipoId)}</td>
-      <td>${item.tipo}</td>
-      <td>${item.actividad}</td>
-      <td>${item.responsable || "-"}</td>
-      <td>${currency(item.costo)}</td>
-      <td>${actions("mantenimiento", item.id)}</td>
-    </tr>
-  `).join("") || rowEmpty(7, "No hay mantenimientos registrados.");
+  $("#equipmentTable").innerHTML =
+    filteredEquipos().map((item) => `
+      <tr>
+       <td>${item.id}</td>
+    <td>${item.codigo}</td>
+     <td>${item.serial || "-"}</td>
+    <td>${item.marca}</td>
+    <td>${item.modelo}</td>
+    <td>
+        <span class="status ${item.estado === "Activo" ? "" : "warning"
+      }">
+            ${item.estado}
+        </span>
+    </td>
+    <td>${item.ubicacion || "-"}</td>
+    <td>${item.responsableActual || "-"}</td>
+    <td>${actions("equipo", item.id)}</td>
+</tr>
+    `).join("") ||
+    rowEmpty(7, "No hay equipos para mostrar.");
 
-  $("#rotationTable").innerHTML = state.rotaciones.map((item) => `
-    <tr>
-      <td>${formatDate(item.fechaAsignacion)}</td>
-      <td>${equipmentName(item.equipoId)}</td>
-      <td>${item.personaAsignada}</td>
-      <td>${item.proyecto || "-"}</td>
-      <td>${formatDate(item.fechaDevolucion)} ${item.motivoDevolucion ? `· ${item.motivoDevolucion}` : ""}</td>
-      <td>${actions("rotacion", item.id)}</td>
-    </tr>
-  `).join("") || rowEmpty(6, "No hay rotaciones registradas.");
+  $("#maintenanceTable").innerHTML =
+    filteredMantenimientos().map((item) => `
+      <tr>
+        <td>
+    <a href="#"
+       class="pc-link"
+       data-pc="${item.equipoId}">
+       ${item.equipoId}
+    </a>
+</td>
+        <td>${item.serial || "-"}</td>
+        <td>${formatDate(item.fecha)}</td>
+        <td>${equipmentName(item.equipoId)}</td>
+        <td>${item.tipo}</td>
+        <td>${item.actividad}</td>
+        <td>${item.responsable || "-"}</td>
+        <td>${currency(item.costo)}</td>
+        <td>${actions("mantenimiento", item.id)}</td>
+      </tr>
+    `).join("") ||
+    rowEmpty(8, "No hay mantenimientos registrados.");
+
+  $("#rotationTable").innerHTML =
+    filteredRotaciones().map((item) => `
+      <tr>
+        <td>${item.equipoId}</td>
+        <td>${item.serial || "-"}</td>
+        <td>${formatDate(item.fechaAsignacion)}</td>
+        <td>${equipmentName(item.equipoId)}</td>
+        <td>${item.personaAsignada}</td>
+        <td>${item.proyecto || "-"}</td>
+        <td>${formatDate(item.fechaDevolucion)}</td>
+        <td>${actions("rotacion", item.id)}</td>
+      </tr>
+    `).join("") ||
+    rowEmpty(7, "No hay rotaciones registradas.");
 }
 
 function actions(type, id) {
@@ -300,6 +358,7 @@ function renderLifeSheet() {
       ${sheetRow("Accesorios", equipo.accesorios)}
       ${sheetRow("Ubicacion", equipo.ubicacion)}
       ${sheetRow("Responsable actual", equipo.responsableActual)}
+      ${sheetRow("Ubicación física", equipo.ubicacion)}
     </section>
     <div class="sheet-section-title">3. ACTIVIDADES DE MANTENIMIENTO</div>
     <table class="sheet-table">
@@ -334,6 +393,7 @@ async function loadData() {
     api("/api/mantenimientos"),
     api("/api/rotaciones")
   ]);
+  console.log("EQUIPOS:", equipos);
   state.equipos = equipos;
   state.mantenimientos = mantenimientos;
   state.rotaciones = rotaciones;
@@ -342,18 +402,78 @@ async function loadData() {
 }
 
 async function save(type, resource, formSelector) {
-  const data = formData($(formSelector));
+
+  const form = $(formSelector);
+
+  const data = formData(form);
+
   const current = state.editing[type];
-  const path = current ? `/api/${resource}/${current.id}` : `/api/${resource}`;
-  await api(path, {
+
+  const path =
+    current
+      ? `/api/${resource}/${current.id}`
+      : `/api/${resource}`;
+  if (
+    data.foto &&
+    typeof data.foto !== "string"
+  ) {
+    delete data.foto;
+  }
+  const registro = await api(path, {
     method: current ? "PUT" : "POST",
     body: JSON.stringify(data)
   });
-  state.editing[type] = null;
-  await loadData();
-  toast("Registro guardado correctamente");
-}
 
+
+  // SOLO PARA EQUIPOS
+  if (type === "equipo") {
+
+    const archivo =
+      form.querySelector('[data-photo-input]')
+        ?.files?.[0];
+
+    if (archivo) {
+
+      const formUpload = new FormData();
+
+      formUpload.append(
+        "imagen",
+        archivo
+      );
+
+      formUpload.append(
+        "idComputer",
+        registro.id
+      );
+
+      const response = await fetch(
+        "/api/upload",
+        {
+          method: "POST",
+          body: formUpload
+        }
+      );
+
+      if (!response.ok) {
+
+        throw new Error(
+          "No fue posible subir la imagen"
+        );
+
+      }
+
+    }
+
+  }
+
+  state.editing[type] = null;
+
+  await loadData();
+
+  toast("Registro guardado correctamente");
+  console.log("Equipos cargados:", equipos);
+
+}
 async function remove(type, resource, id) {
   const confirmed = confirm("Esta accion eliminara el registro seleccionado. Deseas continuar?");
   if (!confirmed) return;
@@ -387,32 +507,38 @@ function bindEvents() {
     renderTables();
   });
   document.addEventListener("change", (event) => {
+
     const input = event.target.closest("[data-photo-input]");
+
     if (!input || !input.files?.[0]) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const form = input.closest("form");
-      const photoInput = form.querySelector('input[name="foto"]');
-      const preview = form.querySelector("[data-image-preview]");
-      photoInput.value = reader.result;
-      preview.classList.add("has-image");
-      preview.innerHTML = `<img src="${reader.result}" alt="Foto del equipo">`;
-    };
-    reader.readAsDataURL(input.files[0]);
+
+    const archivo = input.files[0];
+
+    const preview = input
+      .closest("form")
+      .querySelector("[data-image-preview]");
+
+    preview.classList.add("has-image");
+
+    preview.innerHTML = `
+    <img src="${URL.createObjectURL(archivo)}"
+         alt="Vista previa">
+  `;
+
   });
   $("#reportEquipmentSelect").addEventListener("change", (event) => {
     state.selectedEquipmentId = event.target.value;
     renderLifeSheet();
   });
   $("#downloadReportButton").addEventListener("click", () => {
-  // 1. Cambiamos visualmente a la pestaña del reporte
-  setView("reporte");
-  
-  // 2. Esperamos 100 milisegundos a que el navegador dibuje la hoja de vida
-  setTimeout(() => {
-    // 3. Abrimos la ventana del sistema para Guardar como PDF o Imprimir
-    window.print();
-  }, 100);
+    // 1. Cambiamos visualmente a la pestaña del reporte
+    setView("reporte");
+
+    // 2. Esperamos 100 milisegundos a que el navegador dibuje la hoja de vida
+    setTimeout(() => {
+      // 3. Abrimos la ventana del sistema para Guardar como PDF o Imprimir
+      window.print();
+    }, 100);
 
     const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
     const link = document.createElement("a");
@@ -435,7 +561,36 @@ function bindEvents() {
     save("rotacion", "rotaciones", "#rotationForm");
   });
 
+
   document.addEventListener("click", (event) => {
+    const pcLink = event.target.closest("[data-pc]");
+
+if (pcLink) {
+
+    const pcId = pcLink.dataset.pc;
+
+    const equipo = state.equipos.find(
+        item => item.id === pcId
+    );
+
+    if (equipo) {
+
+        state.editing.equipo = equipo;
+
+        setView("equipos");
+
+        renderAll();
+
+        document
+            .querySelector("#equipmentForm")
+            ?.scrollIntoView({
+                behavior: "smooth"
+            });
+
+    }
+
+    return;
+}
     const edit = event.target.closest("[data-edit]");
     const del = event.target.closest("[data-delete]");
     const reset = event.target.closest("[data-reset]");
@@ -456,6 +611,7 @@ function bindEvents() {
       renderAll();
     }
   });
+
 }
 
 bindEvents();

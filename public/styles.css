@@ -435,6 +435,15 @@ td {
 .form-panel {
   position: sticky;
   top: 18px;
+  height: calc(100vh - 36px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.form-panel .form-grid {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
 }
 
 .form-grid {
@@ -771,4 +780,34 @@ td {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
+}
+.serial-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.copy-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.copy-btn:hover {
+    transform: scale(1.15);
+}
+.app{
+    display:flex;
+    min-height:100vh;
+}
+.pc-link{
+    color:#2563eb;
+    text-decoration:none;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.pc-link:hover{
+    text-decoration:underline;
 }

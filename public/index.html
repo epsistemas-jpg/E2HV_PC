@@ -1,218 +1,228 @@
 <!doctype html>
 <html lang="es">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HVPC | Hoja de vida de equipos</title>
-    <link rel="stylesheet" href="/styles.css">
-  </head>
-  <body>
-    <div class="app-shell">
-      <aside class="sidebar">
-        <div class="brand">
-          <div class="brand-mark">HV</div>
-          <div>
-            <strong>HVPC</strong>
-            <span>Gestion de equipos</span>
-          </div>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HVPC | Hoja de vida de equipos</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">HV</div>
+        <div>
+          <strong>HVPC</strong>
+          <span>Gestion de equipos</span>
         </div>
+      </div>
 
-        <nav class="nav">
-          <button class="nav-item active" data-view="dashboard">
-            <span>Panel</span>
-          </button>
-          <button class="nav-item" data-view="equipos">
-            <span>Equipos</span>
-          </button>
-          <button class="nav-item" data-view="mantenimientos">
-            <span>Mantenimientos</span>
-          </button>
-          <button class="nav-item" data-view="rotaciones">
-            <span>Rotaciones</span>
-          </button>
-          <button class="nav-item" data-view="reporte">
-            <span>Reporte</span>
-          </button>
-        </nav>
+      <nav class="nav">
+        <button class="nav-item active" data-view="dashboard">
+          <span>Panel</span>
+        </button>
+        <button class="nav-item" data-view="equipos">
+          <span>Equipos</span>
+        </button>
+        <button class="nav-item" data-view="mantenimientos">
+          <span>Mantenimientos</span>
+        </button>
+        <button class="nav-item" data-view="rotaciones">
+          <span>Rotaciones</span>
+        </button>
+        <button class="nav-item" data-view="reporte">
+          <span>Reporte</span>
+        </button>
+      </nav>
 
-        <div class="sidebar-note">
-          <span>Formato base</span>
-          <strong>Hoja de vida de equipos</strong>
-          <small>CRUD, historial, asignaciones y reporte imprimible.</small>
+      <div class="sidebar-note">
+        <span>Formato base</span>
+        <strong>Hoja de vida de equipos</strong>
+        <small>CRUD, historial, asignaciones y reporte imprimible.</small>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Inventario tecnico</p>
+          <h1>Hoja de vida de equipos de computo</h1>
         </div>
-      </aside>
+        <div class="top-actions">
+          <label class="search">
+            <span>Buscar</span>
+            <input id="searchInput" type="search" placeholder="Codigo, marca, responsable...">
+          </label>
+          <button class="btn secondary" id="printButton">Imprimir</button>
+          <button class="btn primary" id="newEquipmentButton">Nuevo equipo</button>
+        </div>
+      </header>
 
-      <main class="workspace">
-        <header class="topbar">
-          <div>
-            <p class="eyebrow">Inventario tecnico</p>
-            <h1>Hoja de vida de equipos de computo</h1>
-          </div>
-          <div class="top-actions">
-            <label class="search">
-              <span>Buscar</span>
-              <input id="searchInput" type="search" placeholder="Codigo, marca, responsable...">
-            </label>
-            <button class="btn secondary" id="printButton">Imprimir</button>
-            <button class="btn primary" id="newEquipmentButton">Nuevo equipo</button>
-          </div>
-        </header>
-
-        <section class="view active" id="dashboardView">
-          <div class="metrics" id="metrics"></div>
-          <div class="dashboard-grid">
-            <section class="panel">
-              <div class="panel-header">
-                <div>
-                  <p class="eyebrow">Equipos registrados</p>
-                  <h2>Vista rapida</h2>
-                </div>
+      <section class="view active" id="dashboardView">
+        <div class="metrics" id="metrics"></div>
+        <div class="dashboard-grid">
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Equipos registrados</p>
+                <h2>Vista rapida</h2>
               </div>
-              <div class="equipment-list" id="equipmentCards"></div>
-            </section>
-
-            <section class="panel">
-              <div class="panel-header">
-                <div>
-                  <p class="eyebrow">Actividad reciente</p>
-                  <h2>Mantenimientos</h2>
-                </div>
-                <button class="btn ghost" data-view-link="mantenimientos">Ver todo</button>
-              </div>
-              <div class="activity-list" id="recentMaintenance"></div>
-            </section>
-          </div>
-        </section>
-
-        <section class="view" id="equiposView">
-          <div class="split-layout">
-            <section class="panel">
-              <div class="panel-header">
-                <div>
-                  <p class="eyebrow">Inventario</p>
-                  <h2>Equipos</h2>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Codigo</th>
-                      <th>Equipo</th>
-                      <th>Marca</th>
-                      <th>Responsable</th>
-                      <th>Estado</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody id="equipmentTable"></tbody>
-                </table>
-              </div>
-            </section>
-
-            <section class="panel form-panel">
-              <div class="panel-header">
-                <div>
-                  <p class="eyebrow">Ficha tecnica</p>
-                  <h2 id="equipmentFormTitle">Nuevo equipo</h2>
-                </div>
-              </div>
-              <form id="equipmentForm" class="form-grid"></form>
-            </section>
-          </div>
-        </section>
-
-        <section class="view" id="mantenimientosView">
-          <div class="split-layout">
-            <section class="panel">
-              <div class="panel-header">
-                <div>
-                  <p class="eyebrow">Historial tecnico</p>
-                  <h2>Actividades de mantenimiento</h2>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Fecha</th>
-                      <th>Equipo</th>
-                      <th>Tipo</th>
-                      <th>Actividad</th>
-                      <th>Responsable</th>
-                      <th>Costo</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody id="maintenanceTable"></tbody>
-                </table>
-              </div>
-            </section>
-
-            <section class="panel form-panel">
-              <div class="panel-header">
-                <div>
-                  <p class="eyebrow">Registro</p>
-                  <h2 id="maintenanceFormTitle">Nuevo mantenimiento</h2>
-                </div>
-              </div>
-              <form id="maintenanceForm" class="form-grid"></form>
-            </section>
-          </div>
-        </section>
-
-        <section class="view" id="rotacionesView">
-          <div class="split-layout">
-            <section class="panel">
-              <div class="panel-header">
-                <div>
-                  <p class="eyebrow">Asignaciones</p>
-                  <h2>Rotacion de equipos</h2>
-                </div>
-              </div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Fecha</th>
-                      <th>Equipo</th>
-                      <th>Asignado a</th>
-                      <th>Proyecto</th>
-                      <th>Devolucion</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody id="rotationTable"></tbody>
-                </table>
-              </div>
-            </section>
-
-            <section class="panel form-panel">
-              <div class="panel-header">
-                <div>
-                  <p class="eyebrow">Movimiento</p>
-                  <h2 id="rotationFormTitle">Nueva rotacion</h2>
-                </div>
-              </div>
-              <form id="rotationForm" class="form-grid"></form>
-            </section>
-          </div>
-        </section>
-
-        <section class="view" id="reporteView">
-          <section class="report-toolbar">
-            <label>
-              Equipo para reporte
-              <select id="reportEquipmentSelect"></select>
-            </label>
-            <button class="btn primary" id="downloadReportButton">Descargar PDF</button>
+            </div>
+            <div class="equipment-list" id="equipmentCards"></div>
           </section>
-          <article class="life-sheet" id="lifeSheet"></article>
-        </section>
-      </main>
-    </div>
 
-    <div class="toast" id="toast"></div>
-    <script src="/app.js"></script>
-  </body>
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Actividad reciente</p>
+                <h2>Mantenimientos</h2>
+              </div>
+              <button class="btn ghost" data-view-link="mantenimientos">Ver todo</button>
+            </div>
+            <div class="activity-list" id="recentMaintenance"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="equiposView">
+        <div class="split-layout">
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Inventario</p>
+                <h2>Equipos</h2>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Código</th>
+                    <th>Serial</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Estado</th>
+                    <th>Ubicación</th>
+                    <th>Responsable</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="equipmentTable"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel form-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Ficha tecnica</p>
+                <h2 id="equipmentFormTitle">Nuevo equipo</h2>
+              </div>
+            </div>
+            <form id="equipmentForm" class="form-grid"></form>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="mantenimientosView">
+        <div class="split-layout">
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Historial tecnico</p>
+                <h2>Actividades de mantenimiento</h2>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Serial</th>
+                    <th>Fecha</th>
+                    <th>Equipo</th>
+                    <th>Tipo</th>
+                    <th>Actividad</th>
+                    <th>Responsable</th>
+                    <th>Costo</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="maintenanceTable"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel form-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Registro</p>
+                <h2 id="maintenanceFormTitle">Nuevo mantenimiento</h2>
+              </div>
+            </div>
+            <form id="maintenanceForm" class="form-grid"></form>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="rotacionesView">
+        <div class="split-layout">
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Asignaciones</p>
+                <h2>Rotacion de equipos</h2>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Serial</th>
+                    <th>Fecha</th>
+                    <th>Equipo</th>
+                    <th>Asignado a</th>
+                    <th>Proyecto</th>
+                    <th>Devolucion</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="rotationTable"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel form-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Movimiento</p>
+                <h2 id="rotationFormTitle">Nueva rotacion</h2>
+              </div>
+            </div>
+            <form id="rotationForm" class="form-grid"></form>
+          </section>
+        </div>
+      </section>
+
+      <section class="view" id="reporteView">
+        <section class="report-toolbar">
+          <label>
+            Equipo para reporte
+            <select id="reportEquipmentSelect"></select>
+          </label>
+          <button class="btn primary" id="downloadReportButton">Descargar PDF</button>
+        </section>
+        <article class="life-sheet" id="lifeSheet"></article>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast"></div>
+  <script src="/app.js"></script>
+</body>
+
 </html>
